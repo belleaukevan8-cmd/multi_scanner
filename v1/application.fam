@@ -1,0 +1,7 @@
+App(
+    appid="multi_scanner",
+    name="Multi Scanner",
+    apptype=FlipperAppType.EXTERNAL,
+    entry_point="multi_scanner_app",
+    requires=["gui"],
+)
