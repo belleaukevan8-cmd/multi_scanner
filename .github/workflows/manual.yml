@@ -1,0 +1,35 @@
+name: Build Multi Scanner FAP
+
+on:
+  push:
+    branches: [ main ]   # se déclenche à chaque push sur main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Clone Flipper Firmware
+        run: |
+          git clone https://github.com/flipperdevices/flipperzero-firmware.git
+          cd flipperzero-firmware
+          pip3 install -r requirements.txt
+
+      - name: Compile Multi Scanner
+        run: |
+          cd flipperzero-firmware
+          ../fbt fap_multi_scanner   # Ton app doit s’appeler multi_scanner
+
+      - name: Upload FAP
+        uses: actions/upload-artifact@v3
+        with:
+          name: multi_scanner_fap
+          path: flipperzero-firmware/build/fap/multi_scanner.fap
